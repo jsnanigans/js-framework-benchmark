@@ -1,5 +1,5 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 import { Subject } from "rxjs";
 import { scan } from "rxjs/operators";
 import { state, useStateObservable } from "@react-rxjs/core";
@@ -31,19 +31,7 @@ const A = [
   "expensive",
   "fancy",
 ];
-const C = [
-  "red",
-  "yellow",
-  "blue",
-  "green",
-  "pink",
-  "brown",
-  "purple",
-  "brown",
-  "white",
-  "black",
-  "orange",
-];
+const C = ["red", "yellow", "blue", "green", "pink", "brown", "purple", "brown", "white", "black", "orange"];
 const N = [
   "table",
   "chair",
@@ -69,9 +57,7 @@ function buildData(count) {
     const id = nextId++;
     data[i] = {
       id,
-      label: `${A[random(A.length)]} ${C[random(C.length)]} ${
-        N[random(N.length)]
-      }`,
+      label: `${A[random(A.length)]} ${C[random(C.length)]} ${N[random(N.length)]}`,
     };
   }
   return data;
@@ -111,7 +97,7 @@ const items$ = state(
           return init;
         case "swap": {
           const newData = data.slice();
-          if (data.length>998) {
+          if (data.length > 998) {
             const tmp = newData[1];
             newData[1] = newData[998];
             newData[998] = tmp;
@@ -130,9 +116,7 @@ const onSelect = (id) => {
 };
 const selectedId$ = state(selected$, 0);
 
-const GlyphIcon = (
-  <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
-);
+const GlyphIcon = <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>;
 
 const Row = React.memo(({ item, isSelected }) => {
   return (
@@ -152,19 +136,12 @@ const Row = React.memo(({ item, isSelected }) => {
 const RowList = () => {
   const rows = useStateObservable(items$);
   const selecteId = useStateObservable(selectedId$);
-  return rows.map((item) => (
-    <Row key={item.id} item={item} isSelected={selecteId === item.id} />
-  ));
+  return rows.map((item) => <Row key={item.id} item={item} isSelected={selecteId === item.id} />);
 };
 
 const Button = ({ id, title, cb }) => (
   <div className="col-sm-6 smallpad">
-    <button
-      type="button"
-      className="btn btn-primary btn-block"
-      id={id}
-      onClick={cb}
-    >
+    <button type="button" className="btn btn-primary btn-block" id={id} onClick={cb}>
       {title}
     </button>
   </div>
@@ -179,16 +156,8 @@ const Main = () => (
         </div>
         <div className="col-md-6">
           <div className="row">
-            <Button
-              id="run"
-              title="Create 1,000 rows"
-              cb={() => onReset(1000)}
-            />
-            <Button
-              id="runlots"
-              title="Create 10,000 rows"
-              cb={() => onReset(10000)}
-            />
+            <Button id="run" title="Create 1,000 rows" cb={() => onReset(1000)} />
+            <Button id="runlots" title="Create 10,000 rows" cb={() => onReset(10000)} />
             <Button id="add" title="Append 1,000 rows" cb={onAdd} />
             <Button id="update" title="Update every 10th row" cb={onUpdate} />
             <Button id="clear" title="Clear" cb={onClear} />
@@ -202,10 +171,7 @@ const Main = () => (
         <RowList />
       </tbody>
     </table>
-    <span
-      className="preloadicon glyphicon glyphicon-remove"
-      aria-hidden="true"
-    ></span>
+    <span className="preloadicon glyphicon glyphicon-remove" aria-hidden="true"></span>
   </div>
 );
 
