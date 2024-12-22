@@ -1,5 +1,5 @@
 import { useBloc } from "@blac/react";
-import { Cubit } from "blac";
+import { Cubit } from "@blac/core";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
@@ -105,7 +105,7 @@ const Row = React.memo(({ index }) => {
 });
 
 const RowList = React.memo(() => {
-  const [data] = useBloc(DemoBloc, { dependencySelector: (s) => [s.length] });
+  const [data] = useBloc(DemoBloc, { dependencySelector: (s) => [[s.length]] });
 
   return data.map((item, i) => <Row key={item.id} index={i} />);
 });

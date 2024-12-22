@@ -17,7 +17,9 @@ const KnownIssuesList = () => {
       renderItem={(issue) => (
         <List.Item>
           <Typography.Text className="known-issues__issue-code">
-            <a id={issue.number.toFixed()} href={issue.link}>{issue.number}</a>
+            <a id={issue.number.toFixed()} href={issue.link}>
+              {issue.number}
+            </a>
           </Typography.Text>{" "}
           {issue.text}
         </List.Item>
@@ -28,9 +30,10 @@ const KnownIssuesList = () => {
 
 const App = () => {
   // eslint-disable-next-line no-constant-condition
+  const version = "Chrome 131.0.6778.85"
   const disclaimer = false ? (
     <div>
-      <h2>Results for js web frameworks benchmark - official run</h2>
+      <h2>js-framework-benchmark results for {version}</h2>
       <p>
         A description of the benchmark and the source code and can be found in the github{" "}
         <a href="https://github.com/krausest/js-framework-benchmark">repository</a>.
@@ -46,8 +49,8 @@ const App = () => {
 
   const testEnvironmentInfo = (
     <p>
-      The benchmark was run on a MacBook Pro 14 (32 GB RAM, 8/14 Cores, OSX 14.4), Chrome 123.0.6312.59 (arm64) using
-      the puppeteer benchmark driver with reduced tracing.
+      The benchmark was run on a MacBook Pro 14 (32 GB RAM, 8/14 Cores, OSX 15.0), {version}
+      (arm64) using the puppeteer benchmark driver with reduced tracing.
     </p>
   );
 

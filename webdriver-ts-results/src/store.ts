@@ -23,7 +23,7 @@ const removeKeyedSuffix = (value: string) => {
 const mappedFrameworks = rawFrameworks.map((f) => ({
   name: f.name,
   dir: f.dir,
-  displayname: removeKeyedSuffix(f.name),
+  displayname: removeKeyedSuffix(f.name ?? "unknown"),
   issues: f.issues ?? [],
   type: f.keyed ? FrameworkType.KEYED : FrameworkType.NON_KEYED,
   frameworkHomeURL: f.frameworkHomeURL,
@@ -33,8 +33,8 @@ const allBenchmarks = new Set(rawBenchmarks);
 const allFrameworks = new Set(mappedFrameworks);
 
 const results: Result[] = [];
-for (let result of rawResults) {
-  for (let b of result.b) {
+for (const result of rawResults) {
+  for (const b of result.b) {
     const values: { [k: string]: ResultValues } = {};
     for (const key of Object.keys(b.v)) {
       const r = b.v[key];
@@ -46,7 +46,11 @@ for (let result of rawResults) {
       };
       values[key] = vals;
     }
-    results.push({ framework: rawFrameworks[result.f].name, benchmark: rawBenchmarks[b.b].id, results: values });
+    results.push({
+      framework: rawFrameworks[result.f].name ?? "unknown",
+      benchmark: rawBenchmarks[b.b].id,
+      results: values,
+    });
   }
 }
 console.log(results);
@@ -328,7 +332,7 @@ export const useRootStore = create<State & Actions>((set, get) => ({
 
     try {
       navigator.clipboard.writeText(json);
-      window.location.hash = btoa(json);
+      globalThis.location.hash = btoa(json);
     } catch (error) {
       console.error("Copying state failed", error);
     }

@@ -180,7 +180,7 @@ function colorsForStatisticResult(statisticResult: StatisticResult) {
 }
 
 const statisticComputeColor = function (sign: number, pValue: number): [string, string, StatisticResult] {
-  if (pValue > 0.1) {
+  if (pValue > 0.05 || Number.isNaN(pValue)) {
     return undecided; //['#fff','#000', StatisticResult.Undecided];
   }
   if (sign <= 0) {
@@ -364,13 +364,15 @@ export class ResultTableData {
       benchmarkWeights = Array.from<number>({ length: benchmarks.length }).fill(1);
     }
 
+    let hasResults = false;
     let gMean = 0.0;
     resultsForFramework.forEach((r, idx) => {
       if (r !== null && !Number.isNaN(r.factor)) {
+        hasResults = true;
         gMean += benchmarkWeights[idx] * Math.log(r.factor);
       }
     });
-    const value = Math.exp(gMean / benchmarkWeights.reduce((a, b) => a + b, 0));
+    const value = hasResults ? Math.exp(gMean / benchmarkWeights.reduce((a, b) => a + b, 0)) : NaN;
 
     return this.compareWith
       ? new TableResultGeommeanEntry(framework.name, framework, value, "#fff", "#000")
@@ -458,17 +460,17 @@ export class ResultTableData {
     // if (benchmark.type === BenchmarkType.CPU) {
     //     factor = Math.max(1, factor);
     // }
-    const conficenceInterval =
+    const confidenceInterval = 
       (1.959964 * (resultValues.standardDeviation || 0)) / Math.sqrt(resultValues.values.length);
-    const conficenceIntervalStr = benchmark.type === BenchmarkType.CPU ? conficenceInterval.toFixed(1) : null;
-    const formattedValue = formatEn.format(value);
+      const confidenceIntervalStr = benchmark.type === BenchmarkType.CPU ? confidenceInterval.toFixed(1) : null;
+      const formattedValue = formatEn.format(value);
 
-    if (!this.compareWith) {
+    if (!this.compareWith || benchmark.type !== BenchmarkType.CPU) {
       return new TableResultValueEntry(
         framework.name,
         value,
         formattedValue,
-        conficenceIntervalStr,
+        confidenceIntervalStr,
         factor,
         factor.toFixed(2),
         computeColor(factor),
@@ -493,11 +495,14 @@ export class ResultTableData {
     const s2_2 = compareWithResultsStdDev * compareWithResultsStdDev;
     const n1 = compareWithResultsValues.values.length;
     const n2 = resultValues.values.length;
-    const ny =
-      Math.pow(s1_2 / n1 + s2_2 / n2, 2) /
-      ((s1_2 * s1_2) / (n1 * n1 * (n1 - 1)) + (s2_2 * s2_2) / (n2 * n2 * (n2 - 1)));
+    // Welch Welch–Satterthwaite dof
+    // const dof =
+    //   Math.pow(s1_2 / n1 + s2_2 / n2, 2) /
+    //   ((s1_2 * s1_2) / (n1 * n1 * (n1 - 1)) + (s2_2 * s2_2) / (n2 * n2 * (n2 - 1)));
+    // simple dof 
+    const dof = n1 + n2 - 2;
     const t = (x1 - x2) / Math.sqrt(s1_2 / n1 + s2_2 / n2);
-    const p = (1.0 - jStat.studentt.cdf(Math.abs(t), ny)) * 2;
+    const p = (1.0 - jStat.studentt.cdf(Math.abs(t), dof)) * 2;
 
     const statisticalCol = statisticComputeColor(t, p);
     const statisticalResult = (p * 100).toFixed(3) + "%";
@@ -506,7 +511,7 @@ export class ResultTableData {
       framework.name,
       value,
       formattedValue,
-      conficenceIntervalStr,
+      confidenceIntervalStr,
       factor,
       factor.toFixed(2),
       statisticalCol[0],

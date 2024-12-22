@@ -95,8 +95,9 @@ function browserPath(benchmarkOptions: BenchmarkOptions) {
   if (process.platform == "darwin") {
     return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
   } else if (process.platform == "linux") {
-    return "google-chrome";
+    return "/usr/bin/google-chrome";
   } else if (/^win/i.test(process.platform)) {
+    // eslint-disable-next-line unicorn/prefer-string-raw
     return "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
   } else {
     throw new Error("Path to Google Chrome executable must be specified");
@@ -109,18 +110,28 @@ export async function startBrowser(benchmarkOptions: BenchmarkOptions): Promise<
   const window_width = width,
     window_height = height;
 
+  const disableFeatures = [
+    "Translate", // avoid translation popups
+    "PrivacySandboxSettings4", // avoid privacy popup
+    "IPH_SidePanelGenericMenuFeature"  // bookmark popup see https://github.com/krausest/js-framework-benchmark/issues/1688
+  ];
+
   const args = [
     `--window-size=${window_width},${window_height}`,
-    "--js-flags=--expose-gc",
-    "--no-default-browser-check",
-    "--disable-features=PrivacySandboxSettings4",
+    "--js-flags=--expose-gc",     // needed for gc() function
+    "--no-default-browser-check", 
+    "--disable-sync",           
+    "--no-first-run",     
+    "--ash-no-nudges",
+    "--disable-extensions",
+    `--disable-features=${disableFeatures.join(',')}`
   ];
   if (benchmarkOptions.headless) args.push("--headless=new");
 
+  console.log("browser arguments", args);
   const browser = await puppeteer.launch({
     headless: false,
     executablePath: browserPath(benchmarkOptions),
-
     args,
     dumpio: false,
     defaultViewport: {

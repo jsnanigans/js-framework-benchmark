@@ -1,6 +1,3 @@
-**Please note: There's an [issue](https://github.com/krausest/js-framework-benchmark/issues/1655) with chrome 124 such that we don't get reliable values. Currently all PRs are blocked by this issue.**
-
-
 # js-framework-benchmark
 
 This is a simple benchmark for several javascript frameworks. The benchmarks creates a large table with randomized entries and measures the time for various operations including rendering duration.
@@ -565,6 +562,22 @@ Thanks to Baptiste Augrain for making the benchmarks more sophisticated and addi
 # History
 
 Frameworks without significant activity on github or npm for more than a year will be removed (_automatic commits like dependabot and minor updates, like docs editions, are ignored_).
+
+## 2024-12-11
+The following frameworks were archived after chrome 131. Their last results are included in [chrome 131 results](https://krausest.github.io/js-framework-benchmark/2024/table_chrome_131.0.6778.85.html)
+- [x] react-signalis
+- [x] react-recoil
+- [x] doz
+- [x] ef.js
+- [x] metron
+- [x] mimbl
+- [x] react-focal
+- [x] react-diagon
+- [x] rax
+- [x] scarlets-frame
+- [x] strv, strve-rv, strve-reactivity
+- [x] unis
+- [x] whatsup
 
 ## 2023-12-10
 The following frameworks were archived after chrome 120. Their last results are included in [chrome 120 results](https://krausest.github.io/js-framework-benchmark/2023/table_chrome_120.0.6099.62.html).

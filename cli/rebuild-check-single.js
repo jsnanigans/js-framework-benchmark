@@ -33,10 +33,10 @@ export function rebuildCheckSingle({ frameworks }) {
   const frameworkNames = frameworks.join(" ");
 
   try {
-    const benchCmd = `npm run bench -- --headless true --smoketest true ${frameworkNames}`;
+    const benchCmd = `npm run bench -- --runner playwright  --headless true --smoketest true ${frameworkNames}`;
     runCommand(benchCmd, "webdriver-ts");
 
-    const keyedCmd = `npm run isKeyed -- --headless true ${frameworkNames}`;
+    const keyedCmd = `npm run isKeyed -- --runner playwright --headless true ${frameworkNames}`;
     runCommand(keyedCmd, "webdriver-ts");
 
     const cspCmd = `npm run checkCSP -- --headless true ${frameworkNames}`;
@@ -45,8 +45,9 @@ export function rebuildCheckSingle({ frameworks }) {
     console.log("rebuild-check-single.js finished");
     console.log("All checks are fine!");
     console.log(`======> Please rerun the benchmark: npm run bench ${frameworkNames}`);
+    return true;
   } catch (error) {
     console.log(`rebuild-check-single failed for ${frameworks.join(" ")}`);
-    process.exit(-1);
+    return false;
   }
 }

@@ -1,11 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { h, render, state } from "reflex-dom"
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { For } from "reflex-dom/performance-helpers"
-// import { h, render, state } from "../node_modules/reflex-dom/dist/index.es2020.mjs"
-// import { For } from "../node_modules/reflex-dom/dist/performance-helpers.es2020.mjs"
-
 
 // ----------------------------------------------------------------------------- DATA HELPERS
 
@@ -82,8 +76,8 @@ const buildData = (count:number) => {
 
 // ----------------------------------------------------------------------------- BUTTON
 
-function Button ({ id, onClick, title }) {
-	return <div class="col-sm-6 smallpad">
+const Button = ({ id, onClick, title }) =>
+	<div class="col-sm-6 smallpad">
 		<button
 			type="button"
 			class="btn btn-primary btn-block"
@@ -91,17 +85,11 @@ function Button ({ id, onClick, title }) {
 			children={[ title ]}
 		/>
 	</div>
-}
 
 // ----------------------------------------------------------------------------- ROW
 
-Row.shouldUpdate = (newProps, oldProps) => (
-	oldProps.selected !== newProps.selected
-	|| oldProps.label !== newProps.label
-)
-Row.isFactory = false
-function Row ( props ) {
-	return <tr class={ props.selected ? "danger" : "" }>
+const Row = ( props ) =>
+	<tr class={ props.selected ? "danger" : "" }>
 		<td class="col-md-1">{ props.id }</td>
 		<td class="col-md-4">
 			<a onClick={ () => toggleSelection( props.id ) }>
@@ -115,17 +103,19 @@ function Row ( props ) {
 		</td>
 		<td class="col-md-6" />
 	</tr>
-}
 
+Row.shouldUpdate = (newProps, oldProps) => (
+	oldProps.selected !== newProps.selected
+	|| oldProps.label !== newProps.label
+)
 
 // ----------------------------------------------------------------------------- JUMBOTRON
 
-Jumbotron.isFactory = false
-function Jumbotron () {
-	return <div class="jumbotron">
+const Jumbotron = () =>
+	<div class="jumbotron">
 		<div class="row">
 			<div class="col-md-6">
-				<h1>Reflex-JS keyed</h1>
+				<h1>Reflex</h1>
 			</div>
 			<div class="col-md-6">
 				<div class="row">
@@ -139,7 +129,6 @@ function Jumbotron () {
 			</div>
 		</div>
 	</div>
-}
 
 // ----------------------------------------------------------------------------- APP
 
@@ -147,14 +136,16 @@ function App () {
 	return () => <div class="container">
 		<Jumbotron />
 		<table class="table table-hover table-striped test-data">
-			<For as="tbody" each={ $data }>
-				{item => <Row
-					key={ item.id }
-					id={ item.id }
-					label={ item.label }
-					selected={ $selected.value === item.id }
-				/>}
-			</For>
+			<tbody>
+				{$data.value.map( item =>
+					<Row
+						key={ item.id }
+						id={ item.id }
+						label={ item.label }
+						selected={ $selected.value === item.id }
+					/>
+				)}
+			</tbody>
 		</table>
 		<span class="preloadicon glyphicon glyphicon-remove" aria-hidden="true" />
 	</div>

@@ -1,5 +1,5 @@
 import { NgFor } from "@angular/common";
-import { Component, WritableSignal, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, WritableSignal, signal } from "@angular/core";
 
 const adjectives = [
   "pretty",
@@ -63,10 +63,10 @@ interface Data {
 }
 
 @Component({
-  selector: "app-root",
-  standalone: true,
-  imports: [NgFor],
-  templateUrl: "./app.component.html",
+    selector: "app-root",
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [NgFor],
+    templateUrl: "./app.component.html"
 })
 export class AppComponent {
   data = signal<Array<Data>>([]);

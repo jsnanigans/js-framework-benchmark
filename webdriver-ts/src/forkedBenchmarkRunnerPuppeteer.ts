@@ -7,7 +7,6 @@ import {
   ErrorAndWarning,
   FrameworkData,
   Config,
-  puppeteerWait,
   wait,
 } from "./common.js";
 import { startBrowser } from "./puppeteerAccess.js";
@@ -49,12 +48,8 @@ function convertError(error: any): string {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function forceGC(page: Page) {
-  for (let i = 0; i < 7; i++) {
-    // await client.send('HeapProfiler.collectGarbage');
-    await page.evaluate("window.gc()");
-  }
+  await page.evaluate("window.gc({type:'major',execution:'sync',flavor:'last-resort'})");
 }
 
 async function runCPUBenchmark(
@@ -97,11 +92,9 @@ async function runCPUBenchmark(
       //     downloadThroughput: 780 * 1024 / 8, // 780 kb/s
       //     uploadThroughput: 330 * 1024 / 8, // 330 kb/s
       // });
-      await puppeteerWait();
 
       console.log("initBenchmark");
       await initBenchmark(page, benchmark, framework);
-      await puppeteerWait();
 
       // let categories = ["blink.user_timing", "devtools.timeline", "disabled-by-default-devtools.timeline"];
       // "blink", "cc","toplevel","v8","benchmark","gpu","viz"
@@ -140,17 +133,14 @@ async function runCPUBenchmark(
         categories: categories,
       });
       await wait(50);
-      await puppeteerWait();
 
       await forceGC(page);
-      await puppeteerWait();
 
       console.log("runBenchmark");
       // let m1 = await page.metrics();
 
       await runBenchmark(page, benchmark, framework);
 
-      await puppeteerWait();
       await wait(100);
       await page.tracing.stop();
       // let m2 = await page.metrics();
@@ -251,7 +241,7 @@ async function runMemBenchmark(
       // });
       console.log("initBenchmark");
       await initBenchmark(page, benchmark, framework);
-      const client = await page.target().createCDPSession();
+      const client = await page.createCDPSession();
 
       console.log("runBenchmark");
       await runBenchmark(page, benchmark, framework);
