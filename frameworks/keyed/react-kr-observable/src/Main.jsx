@@ -1,7 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import { observer } from 'kr-observable';
 import { Row } from './Row';
-import { RowsStore } from './RowsStore';
+import { rowsStore } from './RowsStore';
+import { Fragment } from "react";
+
 
 const Button = ({ children, id, onClick }) => {
   return (
@@ -18,23 +20,15 @@ const Button = ({ children, id, onClick }) => {
   );
 };
 
-const RowList = observer(function list({ store }) {
-  return (
-    <>
-      {store.rows.map(row => (
-        <Row
-          key={row.id}
-          data={row}
-          onSelect={store.select}
-          onDelete={store.delete}
-          store={store}
-        />
-      ))}
-    </>
-  )
+const RowList = observer(function list() {
+  return rowsStore.rows.map(row => (
+          <Row
+            key={row.id}
+            data={row}
+          />
+        )
+      )
 })
-
-const store = new RowsStore()
 
 function Main() {
   return (
@@ -42,32 +36,32 @@ function Main() {
       <div className="jumbotron">
         <div className="row">
           <div className="col-md-6">
-            <h1>React + Mobx</h1>
+            <h1>React + kr-observable</h1>
           </div>
 
           <div className="col-md-6">
             <div className="row">
-              <Button id="run" onClick={store.run}>
+              <Button id="run" onClick={rowsStore.run}>
                 Create 1,000 rows
               </Button>
 
-              <Button id="runlots" onClick={store.runLots}>
+              <Button id="runlots" onClick={rowsStore.runLots}>
                 Create 10,000 rows
               </Button>
 
-              <Button id="add" onClick={store.add}>
+              <Button id="add" onClick={rowsStore.add}>
                 Append 1,000 rows
               </Button>
 
-              <Button id="update" onClick={store.update}>
+              <Button id="update" onClick={rowsStore.update}>
                 Update every 10th row
               </Button>
 
-              <Button id="clear" onClick={store.clear}>
+              <Button id="clear" onClick={rowsStore.clear}>
                 Clear
               </Button>
 
-              <Button id="swaprows" onClick={store.swapRows}>
+              <Button id="swaprows" onClick={rowsStore.swapRows}>
                 Swap Rows
               </Button>
             </div>
@@ -77,7 +71,7 @@ function Main() {
 
       <table className="table table-hover table-striped test-data">
         <tbody>
-        <RowList store={store} />
+        <RowList />
         </tbody>
       </table>
 

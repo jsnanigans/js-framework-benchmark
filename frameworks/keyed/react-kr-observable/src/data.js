@@ -1,4 +1,4 @@
-import { RowStore } from './RowStore';
+import { makeObservable } from "kr-observable";
 
 const adjectives = [
   'pretty',
@@ -43,7 +43,7 @@ const colours = [
 ];
 
 const nouns = [
-  'table',
+  'pencil',
   'chair',
   'house',
   'bbq',
@@ -64,19 +64,16 @@ const random = (max) => Math.round(Math.random() * 1000) % max;
 
 export const buildData = (count) => {
   const data = [];
-
+  const ignore = new Set(['id'])
+  const shallow = new Set(['label', 'selected'])
   for (let i = 0; i < count; i++) {
-    data.push(
-      new RowStore(
-        id++,
-        adjectives[random(adjectives.length)] +
-          ' ' +
-          colours[random(colours.length)] +
-          ' ' +
-          nouns[random(nouns.length)]
-      )
-    );
+    data.push(makeObservable({
+      id: id++,
+      label: `${adjectives[random(adjectives.length)]} ${colours[random(colours.length)]} ${nouns[random(nouns.length)]}`,
+      selected: false
+    }, ignore, shallow))
   }
-
+  // const t1 = performance.now();
+  // console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
   return data;
 };
