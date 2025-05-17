@@ -21,7 +21,7 @@ const licensePluginConfig = {
 
 /** @type {import("esbuild").BuildOptions;} */
 const esbuildConfig = {
-  entryPoints: ["src/main.jsx"],
+  entryPoints: ["src/main.tsx"],
   bundle: true,
   minify: true,
   format: "iife",

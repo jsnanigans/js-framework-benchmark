@@ -24,13 +24,15 @@
     "url": "https://github.com/krausest/js-framework-benchmark.git"
   },
   "devDependencies": {
-    "esbuild": "^0.24.0",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "esbuild": "^0.25.4",
     "esbuild-plugin-license": "^1.2.3"
   },
   "dependencies": {
-    "@blac/core": "^2.0.0",
-    "@blac/react": "^2.0.0",
-    "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "@blac/core": "2.0.0-rc-1",
+    "@blac/react": "2.0.0-rc-1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   }
 }
