@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@blac/core':
-        specifier: 2.0.0-rc-1
-        version: 2.0.0-rc-1
+        specifier: 2.0.0-rc-3
+        version: 2.0.0-rc-3
       '@blac/react':
-        specifier: 2.0.0-rc-1
-        version: 2.0.0-rc-1(@blac/core@2.0.0-rc-1)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 2.0.0-rc-3
+        version: 2.0.0-rc-3(@blac/core@2.0.0-rc-3)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: 19.1.0
         version: 19.1.0
@@ -36,13 +36,13 @@ importers:
 
 packages:
 
-  '@blac/core@2.0.0-rc-1':
-    resolution: {integrity: sha512-D53ItnucLQyvvo8VDNlO/xS5r6NSbMSRLNAH1Gb19mMxZXf0NS71Qpt8XoMfknMgB4bGZLRQ28wmG8n41xXkHw==}
+  '@blac/core@2.0.0-rc-3':
+    resolution: {integrity: sha512-+Nhc6dK7GDsN4U1ls/wm7uGD5mMCwXk0lJDjrZ9GusZKAKCL7BlxEYyUio1kaQV7SECC8K9Gainr1VcZQYGp8A==}
 
-  '@blac/react@2.0.0-rc-1':
-    resolution: {integrity: sha512-9e7MqeUdvpB528nWPmHxW4mrTQsi0nOta+lr4fKpAbCB9hyi8JKyiG8xnCfoPTRrxDMO2ac6zfjOXPf18zGoRA==}
+  '@blac/react@2.0.0-rc-3':
+    resolution: {integrity: sha512-pi7Dk26MnttkxuCP9vKqml4qyK9tbQFwsYlqNaFJQoG2iGa75hiK1WP8JDZ5RpM5mgDa24jXT6nG30NJxIvXBQ==}
     peerDependencies:
-      '@blac/core': 2.0.0-rc-1
+      '@blac/core': 2.0.0-rc-3
       '@types/react': ^18.0.0 || ^19.0.0
       '@types/react-dom': ^18.0.0 || ^19.0.0
       react: ^18.0.0 || ^19.0.0
@@ -238,11 +238,11 @@ packages:
 
 snapshots:
 
-  '@blac/core@2.0.0-rc-1': {}
+  '@blac/core@2.0.0-rc-3': {}
 
-  '@blac/react@2.0.0-rc-1(@blac/core@2.0.0-rc-1)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@blac/react@2.0.0-rc-3(@blac/core@2.0.0-rc-3)(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
-      '@blac/core': 2.0.0-rc-1
+      '@blac/core': 2.0.0-rc-3
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
     optionalDependencies:

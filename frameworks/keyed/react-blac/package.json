@@ -30,8 +30,8 @@
     "esbuild-plugin-license": "^1.2.3"
   },
   "dependencies": {
-    "@blac/core": "2.0.0-rc-1",
-    "@blac/react": "2.0.0-rc-1",
+    "@blac/core": "2.0.0-rc-3",
+    "@blac/react": "2.0.0-rc-3",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   }
