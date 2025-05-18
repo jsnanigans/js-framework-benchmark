@@ -9,29 +9,14 @@ class ListBloc extends Cubit<{
   removed: number[];
 }> {
   constructor() {
-    super({
-      data: [],
-      selected: null,
-      removed: [],
-    });
+    super({ data: [], selected: null, removed: [] });
   }
-
   get listLength() {
     return this.state.data.length;
   }
-
-  run = () => {
-    this.patch({ data: buildData(1000) });
-  };
-
-  runLots = () => {
-    this.patch({ data: buildData(10000) });
-  };
-
-  add = () => {
-    this.patch({ data: [...this.state.data, ...buildData(1000)] });
-  };
-
+  run = () => this.patch({ data: buildData(1000) });
+  runLots = () => this.patch({ data: buildData(10000) });
+  add = () => this.patch({ data: [...this.state.data, ...buildData(1000)] });
   update = () => {
     const data = this.state.data.filter((d) => !this.state.removed.includes(d.id));
     for (let i = 0, len = data.length; i < len; i += 10) {
@@ -39,14 +24,9 @@ class ListBloc extends Cubit<{
     }
     this.patch({ data, removed: [] });
   };
-
-  clear = () => {
-    this.patch({ data: [], removed: [] });
-  };
-
+  clear = () => this.patch({ data: [], removed: [] });
   swapRows = () => {
     const data = this.state.data.filter((d) => !this.state.removed.includes(d.id));
-
     if (data.length > 998) {
       const tmp = data[1];
       data[1] = data[998];
@@ -54,14 +34,8 @@ class ListBloc extends Cubit<{
       this.patch({ data, removed: [] });
     }
   };
-
-  remove = (id: number) => {
-    this.patch({ removed: [...this.state.removed, id] });
-  };
-
-  select = (id: number) => {
-    this.patch({ selected: id });
-  };
+  remove = (id: number) => this.patch({ removed: [...this.state.removed, id] });
+  select = (id: number) => this.patch({ selected: id });
 }
 
 const random = (max: number) => Math.round(Math.random() * 1000) % max;
@@ -126,19 +100,28 @@ interface RowProps {
   index: number;
 }
 
+const rowSelector = (state: ListBloc["state"], index: number) => {
+  return [
+    [
+      // add the item itself to the selector
+      state.data[index],
+      // check if the item is selected
+      state.selected === state.data[index].id,
+      // check if the item is removed
+      state.removed.includes(state.data[index].id),
+    ],
+  ];
+};
+
 const Row = memo(
   ({ index }: RowProps) => {
     const [{ selected, data, removed }, { select, remove }] = useBloc(ListBloc, {
-      selector: (state) => [
-        [state.selected === state.data[index].id, state.data[index], state.removed.includes(state.data[index].id)],
-      ],
+      selector: (state) => rowSelector(state, index),
     });
     const item = data[index];
     const isRemoved = removed.includes(item.id);
 
-    if (isRemoved) return null;
-
-    return (
+    return isRemoved ? null : (
       <tr className={selected === item.id ? "danger" : ""}>
         <td className="col-md-1">{item.id}</td>
         <td className="col-md-4">
@@ -161,7 +144,6 @@ interface ButtonProps {
   cb: () => void;
   title: string;
 }
-
 const Button = ({ id, cb, title }: ButtonProps) => (
   <div className="col-sm-6 smallpad">
     <button type="button" className="btn btn-primary btn-block" id={id} onClick={cb}>
